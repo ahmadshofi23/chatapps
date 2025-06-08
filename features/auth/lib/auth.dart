@@ -60,7 +60,7 @@ class FeatureAuthModule extends Module {
                   signOutUsecase: Modular.get<SignOutUsecase>(),
                   updateUserStatusUsecase:
                       Modular.get<UpdateUserStatusUsecase>(),
-                ),
+                )..add(AuthCheckRequested()),
             child: LoginPage(),
           ),
     ),

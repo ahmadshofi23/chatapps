@@ -11,6 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  auth:
+    path: ../auth
   dependecies:
     path: ../../libraries/dependecies
   shared:

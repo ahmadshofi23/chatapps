@@ -137,7 +137,7 @@ class _ChatPageState extends State<ChatPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 2),
                                     child: Text(
-                                      widget.receiverName,
+                                      Uri.decodeComponent(widget.receiverName),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey[800],
