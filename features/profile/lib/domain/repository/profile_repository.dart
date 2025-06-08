@@ -1,5 +1,5 @@
-import 'package:profile/domain/entity/profile_entity.dart';
+import 'package:shared/common/user_entity.dart';
 
 abstract class ProfileRepository {
-  Future<ProfileEntity> getProfile(String userId);
+  Future<UserEntity> getUserProfile(String uid);
 }

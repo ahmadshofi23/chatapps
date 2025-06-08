@@ -150,6 +150,9 @@ class UserListPage extends StatelessWidget {
                       arguments: {'currentUser': currentUser},
                     );
                   },
+                  onLongPress: () {
+                    Modular.to.pushNamed('/profile/${user.uid}');
+                  },
                 );
               },
             );

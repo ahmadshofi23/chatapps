@@ -1,6 +1,5 @@
-import 'package:profile/domain/entity/profile_entity.dart';
 import 'package:profile/domain/repository/profile_repository.dart';
-
+import 'package:shared/common/user_entity.dart';
 import '../datasources/profile_remote_data_source.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
@@ -9,7 +8,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   ProfileRepositoryImpl(this.remote);
 
   @override
-  Future<ProfileEntity> getProfile(String userId) {
-    return remote.fetchProfile(userId);
+  Future<UserEntity> getUserProfile(String uid) {
+    return remote.getUserProfile(uid);
   }
 }

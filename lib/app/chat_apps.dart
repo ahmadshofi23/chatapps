@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:chat/chat.dart';
+import 'package:profile/profile.dart';
+import 'package:user_list/user_list.dart';
 // import 'package:profile/profile.dart';
-import 'package:user_list/user_list.dart'; // Make sure this path matches where FeatureChatModule is defined
 // import 'package:user_list/user_list.dart';
 // import 'package:profile/profile.dart';
 
@@ -15,10 +16,11 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-    ModuleRoute('/auth', module: AuthModule()),
-    ModuleRoute('/chat', module: ChatModule()),
+    ModuleRoute('/auth', module: FeatureAuthModule()),
+    ModuleRoute('/chat', module: FeatureChatModule()),
     RedirectRoute('/', to: '/auth'),
-    ModuleRoute('/user-list', module: UserListModule()),
+    ModuleRoute('/user-list', module: FeatureUserListModule()),
+    ModuleRoute('/profile', module: FeatureProfileModule()),
   ];
 }
 

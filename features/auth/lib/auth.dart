@@ -14,7 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'presentation/bloc/auth_bloc.dart';
 import 'presentation/pages/login_page.dart';
 
-class AuthModule extends Module {
+class FeatureAuthModule extends Module {
   @override
   List<Bind> get binds => [
     Bind.singleton((i) => FirebaseAuth.instance),

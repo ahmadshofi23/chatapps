@@ -40,8 +40,8 @@ dependencies:
     path: features/chat
   user_list:
     path: features/user_list
-  # profile:
-  #   path: features/profile
+  profile:
+    path: features/profile
   dependecies:
     path: libraries/dependecies
   shared:

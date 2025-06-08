@@ -1,6 +1,6 @@
-sealed class ProfileEvent {}
+abstract class ProfileEvent {}
 
-class LoadProfile extends ProfileEvent {
-  final String userId;
-  LoadProfile(this.userId);
+class LoadUserProfile extends ProfileEvent {
+  final String uid;
+  LoadUserProfile(this.uid);
 }

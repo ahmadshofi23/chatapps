@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:chat/domain/usecase/get_messages_stream_usecase.dart';
 
-class ChatModule extends Module {
+class FeatureChatModule extends Module {
   @override
   List<Bind> get binds => [
     Bind.singleton((i) => FirebaseFirestore.instance),

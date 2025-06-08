@@ -4,16 +4,16 @@ import 'package:profile/presentation/bloc/profile_event.dart';
 import 'package:profile/presentation/bloc/profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final GetUserProfileUsecase getProfile;
+  final GetUserProfileUsecase getUserProfile;
 
-  ProfileBloc({required this.getProfile}) : super(ProfileInitial()) {
-    on<LoadProfile>((event, emit) async {
+  ProfileBloc(this.getUserProfile) : super(ProfileInitial()) {
+    on<LoadUserProfile>((event, emit) async {
       emit(ProfileLoading());
       try {
-        final profile = await getProfile(event.userId);
+        final profile = await getUserProfile(event.uid);
         emit(ProfileLoaded(profile));
-      } catch (_) {
-        emit(ProfileError("Failed to load profile"));
+      } catch (e) {
+        emit(ProfileError(e.toString()));
       }
     });
   }

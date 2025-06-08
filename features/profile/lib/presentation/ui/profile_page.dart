@@ -1,59 +1,51 @@
+// presentation/pages/profile_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:profile/presentation/bloc/profile_event.dart';
 import 'package:profile/presentation/bloc/profile_state.dart';
 import '../bloc/profile_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
-  final String userId;
+  final String uid;
 
-  const ProfilePage({super.key, required this.userId});
+  const ProfilePage({Key? key, required this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Modular.get<ProfileBloc>()..add(LoadProfile(userId));
+    context.read<ProfileBloc>().add(LoadUserProfile(uid));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('User Profile')),
+      appBar: AppBar(title: Text('User Profile')),
       body: BlocBuilder<ProfileBloc, ProfileState>(
-        bloc: bloc,
         builder: (context, state) {
           if (state is ProfileLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           } else if (state is ProfileLoaded) {
             final user = state.profile;
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(user.photoUrl),
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 20),
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    user.photoUrl ?? 'https://i.pravatar.cc/150',
                   ),
-                  const SizedBox(height: 16),
-                  Text(user.name, style: const TextStyle(fontSize: 24)),
-                  Text(user.email),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        size: 12,
-                        color: user.isOnline ? Colors.green : Colors.grey,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(user.isOnline ? "Online" : "Offline"),
-                    ],
-                  ),
-                ],
-              ),
+                  radius: 50,
+                ),
+                SizedBox(height: 20),
+                Text('${user.displayName}', style: TextStyle(fontSize: 20)),
+                Text('${user.email}'),
+                Text(
+                  user.isOnline == true ? 'Online' : 'Offline',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
             );
           } else if (state is ProfileError) {
-            return Center(child: Text(state.message));
+            return Center(child: Text('Error: ${state.message}'));
+          } else {
+            return Container();
           }
-          return const SizedBox.shrink();
         },
       ),
     );

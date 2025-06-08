@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class ChatPage extends StatefulWidget {
   final User currentUser;
@@ -29,18 +30,18 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void initState() {
-    print('object: ${widget.currentUser.uid}');
     print('object: ${widget.receiverId}');
     super.initState();
-    context.read<ChatBloc>().add(
-      LoadMessages(widget.currentUser.uid, widget.receiverId),
-    );
+    BlocProvider.of<ChatBloc>(
+      context,
+      listen: false,
+    ).add(LoadMessages(widget.currentUser.uid, widget.receiverId));
   }
 
   void _sendMessage() {
     final text = _messageController.text.trim();
     if (text.isNotEmpty) {
-      context.read<ChatBloc>().add(
+      BlocProvider.of<ChatBloc>(context, listen: false).add(
         SendMessageEvent(
           MessageEntity(
             id: widget.currentUser.uid,
@@ -72,7 +73,25 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text(widget.receiverName)),
+        appBar: AppBar(
+          title: GestureDetector(
+            onTap: () {
+              Modular.to.pushNamed('/profile/${widget.receiverId}');
+            },
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    widget.currentUser.photoURL ?? '',
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(Uri.decodeComponent(widget.receiverName)),
+              ],
+            ),
+          ),
+          actions: [IconButton(icon: const Icon(Icons.call), onPressed: () {})],
+        ),
         body: Column(
           children: [
             Expanded(
@@ -89,6 +108,7 @@ class _ChatPageState extends State<ChatPage> {
                     if (state.messages.isEmpty) {
                       return Center(child: Text('Start the conversation'));
                     }
+
                     return ListView.builder(
                       reverse: true,
                       controller: _scrollController,
@@ -99,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8.0,
-                            vertical: 4.0,
+                            vertical: 6.0,
                           ),
                           child: Align(
                             alignment:
@@ -112,19 +132,43 @@ class _ChatPageState extends State<ChatPage> {
                                       ? CrossAxisAlignment.end
                                       : CrossAxisAlignment.start,
                               children: [
+                                // Nama Pengirim
+                                if (!isMe)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 2),
+                                    child: Text(
+                                      widget.receiverName,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey[800],
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                // Bubble
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color:
                                         isMe
-                                            ? Colors.blue[400]
+                                            ? Colors.blue[600]
                                             : Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: const Radius.circular(16),
+                                      topRight: const Radius.circular(16),
+                                      bottomLeft: Radius.circular(
+                                        isMe ? 16 : 0,
+                                      ),
+                                      bottomRight: Radius.circular(
+                                        isMe ? 0 : 16,
+                                      ),
+                                    ),
                                   ),
                                   child: Text(
                                     msg.text,
                                     style: TextStyle(
                                       color: isMe ? Colors.white : Colors.black,
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ),
@@ -139,8 +183,8 @@ class _ChatPageState extends State<ChatPage> {
                                         color: Colors.grey[600],
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
-                                    if (isMe)
+                                    if (isMe) ...[
+                                      const SizedBox(width: 4),
                                       Icon(
                                         msg.isRead
                                             ? Icons.done_all
@@ -148,9 +192,10 @@ class _ChatPageState extends State<ChatPage> {
                                         size: 14,
                                         color:
                                             msg.isRead
-                                                ? Colors.blue
+                                                ? Colors.lightBlue
                                                 : Colors.grey,
                                       ),
+                                    ],
                                   ],
                                 ),
                               ],

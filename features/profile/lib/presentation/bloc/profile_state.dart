@@ -1,13 +1,13 @@
-import 'package:profile/domain/entity/profile_entity.dart';
+import 'package:shared/common/user_entity.dart';
 
-sealed class ProfileState {}
+abstract class ProfileState {}
 
 class ProfileInitial extends ProfileState {}
 
 class ProfileLoading extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
-  final ProfileEntity profile;
+  final UserEntity profile;
   ProfileLoaded(this.profile);
 }
 

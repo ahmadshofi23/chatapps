@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserListModule extends Module {
+class FeatureUserListModule extends Module {
   @override
   List<Bind> get binds => [
     Bind.singleton((i) => FirebaseFirestore.instance),
