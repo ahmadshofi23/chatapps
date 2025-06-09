@@ -1,4 +1,3 @@
-// presentation/pages/profile_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:profile/presentation/bloc/profile_event.dart';
@@ -22,24 +21,27 @@ class ProfilePage extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           } else if (state is ProfileLoaded) {
             final user = state.profile;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 20),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    user.photoUrl ?? 'https://i.pravatar.cc/150',
+            return SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 20),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      user.photoUrl ?? 'https://i.pravatar.cc/150',
+                    ),
+                    radius: 50,
                   ),
-                  radius: 50,
-                ),
-                SizedBox(height: 20),
-                Text('${user.displayName}', style: TextStyle(fontSize: 20)),
-                Text('${user.email}'),
-                Text(
-                  user.isOnline == true ? 'Online' : 'Offline',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
+                  SizedBox(height: 20),
+                  Text('${user.displayName}', style: TextStyle(fontSize: 24)),
+                  Text('${user.email}'),
+                  Text(
+                    user.isOnline == true ? 'Online' : 'Offline',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
             );
           } else if (state is ProfileError) {
             return Center(child: Text('Error: ${state.message}'));

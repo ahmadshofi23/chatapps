@@ -90,7 +90,6 @@ class _ChatPageState extends State<ChatPage> {
               ],
             ),
           ),
-          actions: [IconButton(icon: const Icon(Icons.call), onPressed: () {})],
         ),
         body: Column(
           children: [

@@ -22,6 +22,7 @@ class UserListPage extends StatelessWidget {
             onPressed: () {
               BlocProvider.of<AuthBloc>(context).add(AuthSignOutRequested());
               Modular.to.pushReplacementNamed('/auth');
+              Modular.to.pushReplacementNamed('/auth');
             },
           ),
         ],
@@ -39,21 +40,35 @@ class UserListPage extends StatelessWidget {
               itemCount: users.length,
               itemBuilder: (context, index) {
                 final user = users[index];
-                return ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Text(user.displayName ?? 'No Name'),
-                  subtitle: Text(
-                    (user.isOnline ?? false) ? "Online" : "Offline",
+                return Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.person),
+                    title: Text(user.displayName ?? 'No Name'),
+                    subtitle: Text(
+                      (user.isOnline ?? false) ? "Online" : "Offline",
+                    ),
+                    trailing:
+                        user.isOnline == true
+                            ? const Icon(
+                              Icons.circle,
+                              color: Colors.green,
+                              size: 12,
+                            )
+                            : const Icon(
+                              Icons.circle,
+                              color: Colors.grey,
+                              size: 12,
+                            ),
+                    onTap: () {
+                      Modular.to.pushNamed(
+                        '/chat/${user.uid}/${Uri.encodeComponent(user.displayName ?? 'No Name')}',
+                        arguments: {'currentUser': currentUser},
+                      );
+                    },
+                    onLongPress: () {
+                      Modular.to.pushNamed('/profile/${user.uid}');
+                    },
                   ),
-                  onTap: () {
-                    Modular.to.pushNamed(
-                      '/chat/${user.uid}/${Uri.encodeComponent(user.displayName ?? 'No Name')}',
-                      arguments: {'currentUser': currentUser},
-                    );
-                  },
-                  onLongPress: () {
-                    Modular.to.pushNamed('/profile/${user.uid}');
-                  },
                 );
               },
             );

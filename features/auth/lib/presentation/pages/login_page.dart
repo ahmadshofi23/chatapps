@@ -25,33 +25,43 @@ class LoginPage extends StatelessWidget {
               '/user-list',
               arguments: {'currentUser': state.user},
             );
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Welcome, ${state.user.displayName ?? "User"}'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
+            return SizedBox.shrink();
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Welcome to Chat App',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.deepPurpleAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 100),
+                  child: ElevatedButton(
                     onPressed: () {
                       ReadContext(
                         context,
-                      ).read<AuthBloc>().add(AuthSignOutRequested());
+                      ).read<AuthBloc>().add(AuthSignInRequested());
                     },
-                    child: const Text('Logout'),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/ic_google.png',
+                          width: 24,
+                          height: 24,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text('Login with Google'),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  ReadContext(
-                    context,
-                  ).read<AuthBloc>().add(AuthSignInRequested());
-                },
-                child: const Text('Login with Google'),
-              ),
+                ),
+              ],
             );
           }
         },
