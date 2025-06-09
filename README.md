@@ -11,3 +11,5 @@
 - begitu seterusnya masuk ke direktori feature, hingga terakhir berada di direktori root dari project
 
 - setelah semua ritual berhasil projek sudah siap untuk di jalankan
+
+- login aplikasi bisa menggunakan email google
